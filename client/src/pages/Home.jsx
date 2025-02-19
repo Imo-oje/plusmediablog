@@ -13,7 +13,7 @@ const Home = () => {
               Plusmedia blog
             </h1>
             <div className="text-left md:w-[400px] md:hidden -mt-4">
-              <p className="fontbold text-sm">
+              <p className="fontbold text-2xl">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro
                 animi ratione voluptatem iste aliquid?
               </p>
@@ -22,9 +22,9 @@ const Home = () => {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className=" h-10 rounded-lg p-2 text-sm w-full border border-black"
+                className=" h-14 rounded-full p-4 text-sm w-full border border-black"
               />
-              <button className="h-10 bg-black text-white px-2 rounded-lg font-bold ">
+              <button className="h-14 bg-black text-white px-2 rounded-full font-bold ">
                 Subscribe
               </button>
             </div>
