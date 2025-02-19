@@ -9,7 +9,7 @@ const Navbar = () => {
     <>
       <header className="navbar flex justify-between items-center p-4 fixed w-full bg-white z-10">
         <div className="w-2/5 flex justify-between items-center">
-          <div className="logo font-bold">UNTTLED</div>
+          <div className="logo font-bold text-2xl">Plusmedia</div>
           <ul className="justify-between items-center gap-8 p-4 hidden md:flex">
             <li className="cursor-pointer font-bold">
               <Link to="/">Home</Link>
@@ -25,11 +25,13 @@ const Navbar = () => {
         <div>
           {menuOpen ? (
             <X
+              size={30}
               onClick={() => setMenuOpen(!menuOpen)}
               className="cursor-pointer md:hidden"
             />
           ) : (
             <MenuIcon
+              size={30}
               onClick={() => setMenuOpen(!menuOpen)}
               className="cursor-pointer md:hidden"
             />
