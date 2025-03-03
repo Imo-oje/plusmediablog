@@ -1,7 +1,4 @@
 import { MenuIcon, Search } from "lucide-react";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
 import {
   Sheet,
   SheetTrigger,
@@ -22,7 +19,7 @@ const Navbar = () => {
                 <SheetTrigger>
                   <MenuIcon />
                 </SheetTrigger>
-                <SheetContent side="left" className="w-[400px] sm:w-[540px]">
+                <SheetContent side="left" className="w-3/5 sm:w-[540px]">
                   <SheetHeader className="flex items-start">
                     <SheetTitle>
                       <div className="font-bold uppercase text-[22px] leading-7 p-1 cursor-pointer">
@@ -39,7 +36,9 @@ const Navbar = () => {
           <div className="font-bold uppercase text-[22px] leading-7 p-1 cursor-pointer">
             Plusmedia
           </div>
-          <div className="hidden md:flex"></div>
+          <div className="hidden md:flex">
+            {/* TODO: Add large screen navbar here */}
+          </div>
           <div className="cursor-pointer p-1">
             <span>
               <Search />
