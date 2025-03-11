@@ -12,3 +12,6 @@ const getEnv = (
 
 export const MONGO_URI = getEnv("MONGO_URI") as string;
 export const PORT = getEnv("PORT") as number;
+export const CLOUDINARY_API_KEY = getEnv("CLOUDINARY_API_KEY") as string;
+export const CLOUDINARY_API_SECRET = getEnv("CLOUDINARY_API_SECRET") as string;
+export const CLOUDINARY_CLOUD_NAME = getEnv("CLOUDINARY_CLOUD_NAME") as string;

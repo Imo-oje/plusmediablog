@@ -5,6 +5,6 @@ export default async function conectDb() {
   try {
     await mongoose.connect(MONGO_URI);
   } catch (error) {
-    console.log("[DATABASE]: Error connecting to databse");
+    console.log("[DATABASE]: Error connecting to databse", error);
   }
 }
