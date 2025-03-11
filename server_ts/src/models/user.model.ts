@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import Role from "./role.model";
+import { compareValue, hashValue } from "../utils/bcrypt";
 
 export interface UserDocument extends Document {
   image: string;
@@ -9,6 +10,8 @@ export interface UserDocument extends Document {
   password: string;
   email: string;
   role: Schema.Types.ObjectId[];
+  omitPassword(): Omit<UserDocument, "password" | "__v" | "_id">;
+  comparePassword(val: string): Promise<boolean>;
 }
 
 const userSchema = new Schema<UserDocument>(
@@ -34,6 +37,25 @@ userSchema.pre<UserDocument>("save", async function (next) {
   }
   next();
 });
+
+userSchema.methods.omitPassword = function () {
+  const user = this.toObject();
+  delete user.password;
+  return user;
+};
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  this.password = await hashValue(this.password);
+  next();
+});
+
+userSchema.methods.comparePassword = async function (val: string) {
+  return compareValue(val, this.password);
+};
 
 const User = mongoose.model<UserDocument>("User", userSchema);
 

@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { login } from "../controllers/auth.controller";
+import {
+  loginHandler,
+  logoutHandler,
+  registerHandler,
+} from "../controllers/auth.controller";
 
 const authRouter = Router();
 
-authRouter.post("/login", login);
+authRouter.post("/register", registerHandler);
+authRouter.post("/login", loginHandler);
+authRouter.get("/logout", logoutHandler);
 
 export default authRouter;
