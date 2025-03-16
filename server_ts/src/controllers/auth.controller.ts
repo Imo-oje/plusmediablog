@@ -17,9 +17,9 @@ export const registerHandler = asyncHandler(async (req, res) => {
 
   return res
     .cookie("accessToken", accessToken, {
-      sameSite: "none",
+      sameSite: "strict",
       httpOnly: true,
-      secure: true,
+      secure: NODE_ENV === "production",
       expires: fiftenMinutesFromNow(),
     })
     .status(CREATED)
@@ -37,9 +37,9 @@ export const loginHandler = asyncHandler(async (req, res) => {
 
   return res
     .cookie("accessToken", accessToken, {
-      sameSite: "none",
+      sameSite: "strict",
       httpOnly: true,
-      secure: true,
+      secure: NODE_ENV === "production",
       expires: fiftenMinutesFromNow(),
     })
     .status(OK)

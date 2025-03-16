@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
-export interface CategoryDocument extends Document {
+export interface CommentDocument extends Document {
   commentId: string;
   content: string;
   replies: String;
@@ -10,7 +10,7 @@ export interface CategoryDocument extends Document {
   parentComment: Schema.Types.ObjectId[];
 }
 
-const categorySchema = new Schema<CategoryDocument>(
+const commentSchema = new Schema<CommentDocument>(
   {
     commentId: { type: String, required: true, default: uuidv4, unique: true },
     post: { type: [Schema.Types.ObjectId], ref: "Post", required: true },
@@ -31,6 +31,6 @@ const categorySchema = new Schema<CategoryDocument>(
   { timestamps: true }
 );
 
-const Category = mongoose.model<CategoryDocument>("Category", categorySchema);
+const Comment = mongoose.model<CommentDocument>("Category", commentSchema);
 
-export default Category;
+export default Comment;

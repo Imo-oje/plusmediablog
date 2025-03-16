@@ -9,7 +9,7 @@ export interface UserDocument extends Document {
   username: string;
   password: string;
   email: string;
-  role: Schema.Types.ObjectId[];
+  role: mongoose.Types.ObjectId[];
   omitPassword(): Omit<UserDocument, "password" | "__v" | "_id">;
   comparePassword(val: string): Promise<boolean>;
 }
@@ -21,7 +21,7 @@ const userSchema = new Schema<UserDocument>(
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true, unique: true },
-    role: { type: [Schema.Types.ObjectId], ref: "Role", required: true },
+    role: { type: [mongoose.Types.ObjectId], ref: "Role", required: true },
   },
   { timestamps: true }
 );
@@ -31,7 +31,7 @@ userSchema.pre<UserDocument>("save", async function (next) {
     const defaultRole = await Role.findOne({ name: "User" });
     if (defaultRole) {
       this.role = [
-        defaultRole._id.toString() as unknown as Schema.Types.ObjectId,
+        defaultRole._id.toString() as unknown as mongoose.Types.ObjectId,
       ];
     }
   }
@@ -56,6 +56,18 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.comparePassword = async function (val: string) {
   return compareValue(val, this.password);
 };
+
+userSchema.pre<UserDocument>("save", async function (next) {
+  if (!this.role || this.role.length === 0) {
+    const defaultRole = await Role.findOne({ name: "user" });
+    if (defaultRole) {
+      this.role = [
+        defaultRole._id.toString() as unknown as mongoose.Types.ObjectId,
+      ];
+    }
+  }
+  next();
+});
 
 const User = mongoose.model<UserDocument>("User", userSchema);
 

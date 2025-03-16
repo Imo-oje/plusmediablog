@@ -22,11 +22,13 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const { mutate: logIn } = useMutation({
+  const { mutate: logIn, isPending } = useMutation({
     mutationFn: (data) => {
-      return fetch("http://localhost:8000/auth/login", {
+      return fetch("http://localhost:2025/auth/login", {
         method: "POST",
-        contentType: "application/json",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
     },
@@ -67,7 +69,9 @@ const Login = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full">Log In</Button>
+          <Button className="w-full" disabled={isPending}>
+            {isPending ? "Loading" : "Log In"}
+          </Button>
         </form>
       </Form>
     </div>

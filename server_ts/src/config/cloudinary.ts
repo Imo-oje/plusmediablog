@@ -18,3 +18,5 @@ const uploadToCloudinary = async (req: Request, options: object) => {
   const result = await cloudinary.uploader.upload(file, options);
   return result.secure_url;
 };
+
+export default uploadToCloudinary;

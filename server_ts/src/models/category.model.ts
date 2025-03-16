@@ -6,6 +6,10 @@ export interface CategoryDocument extends Document {
   name: string;
 }
 
+if (mongoose.models.Category) {
+  delete mongoose.models.Category;
+}
+
 const categorySchema = new Schema<CategoryDocument>(
   {
     categoryId: { type: String, required: true, default: uuidv4, unique: true },

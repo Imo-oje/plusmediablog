@@ -6,6 +6,7 @@ export interface PostDocument extends Document {
   title: string;
   image: string;
   postId: string;
+  content: string;
   likes: number;
   comments: Schema.Types.ObjectId[];
   author: Schema.Types.ObjectId[];
@@ -17,7 +18,7 @@ const postSchema = new Schema<PostDocument>(
     postId: { type: String, required: true, unique: true, default: uuidv4 },
     title: { type: String, required: true },
     image: { type: String, required: false },
-    body: { type: String, required: true },
+    content: { type: String, required: true },
     author: { type: [Schema.Types.ObjectId], ref: "User", required: true },
     likes: { type: Number, required: false, default: 0 },
     comments: {

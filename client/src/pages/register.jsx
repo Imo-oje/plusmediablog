@@ -12,29 +12,41 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import z from "zod";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const registerSchema = z.object({
     email: z.string().email(),
-    username: z.string().min(3, { message: "username is too short" }),
     password: z.string(),
+    confirmPassword: z.string(),
   });
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
   });
+  const navigate = useNavigate();
+  const redirecUrl = location.state?.redirectUrl || "/";
 
-  const { mutate: register } = useMutation({
+  const { mutate: register, isPending } = useMutation({
     mutationFn: (data) => {
-      return fetch("http://localhost:8000/auth/register", {
+      return fetch("http://localhost:2025/auth/register", {
         method: "POST",
-        contentType: "application/json",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
     },
+    onSuccess: (data) => {
+      form.reset();
+      navigate(redirecUrl);
+    },
   });
 
-  const onSubmit = (data) => register(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    return register(data);
+  };
 
   return (
     <div className="flex items-center h-screen border justify-center p-2">
@@ -43,19 +55,6 @@ const Register = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-2"
         >
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder="username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <FormField
             control={form.control}
             name="email"
@@ -82,7 +81,22 @@ const Register = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full">Log In</Button>
+
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input placeholder="confirn password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="w-full" disabled={isPending}>
+            {isPending ? "Loading..." : "Register"}
+          </Button>
         </form>
       </Form>
     </div>

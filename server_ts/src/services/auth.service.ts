@@ -41,7 +41,7 @@ export const loginUser = async (data: { password: string; email: string }) => {
   appAssert(user, UNAUTHORIZED, "invalid email or password");
 
   const isValid = await user.comparePassword(data.password);
-  appAssert(isValid, UNAUTHORIZED, "invalid email or password");
+  appAssert(isValid, UNAUTHORIZED, "Invalid email or password");
 
   const accessToken = jwt.sign(
     { userId: user.userId, role: user.role, username: user.username },
