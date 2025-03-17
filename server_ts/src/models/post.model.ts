@@ -10,7 +10,7 @@ export interface PostDocument extends Document {
   likes: number;
   comments: Schema.Types.ObjectId[];
   author: Schema.Types.ObjectId[];
-  category: Schema.Types.ObjectId[];
+  category: mongoose.Types.ObjectId[];
 }
 
 const postSchema = new Schema<PostDocument>(
@@ -22,7 +22,7 @@ const postSchema = new Schema<PostDocument>(
     author: { type: [Schema.Types.ObjectId], ref: "User", required: true },
     likes: { type: Number, required: false, default: 0 },
     comments: {
-      type: [Schema.Types.ObjectId],
+      type: [mongoose.Types.ObjectId],
       required: false,
       ref: "Comments",
     },
@@ -41,7 +41,7 @@ postSchema.pre<PostDocument>("save", async function (next) {
     const defaultCategory = await Category.findOne({ name: "Uncategorized" });
     if (defaultCategory) {
       this.category = [
-        defaultCategory._id.toString() as unknown as Schema.Types.ObjectId,
+        defaultCategory._id.toString() as unknown as mongoose.Types.ObjectId,
       ];
     }
   }

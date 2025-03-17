@@ -1,4 +1,3 @@
-import { title } from "process";
 import z from "zod";
 
 const passwordSchema = z.string().min(6).max(255);

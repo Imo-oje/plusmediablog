@@ -6,6 +6,8 @@ import {
 } from "../constants/env";
 import { URI } from "./multer";
 import { Request } from "express";
+import appAssert from "../utils/assert";
+import { UNPROCESSABLE_CONTENT } from "../constants/http";
 
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -14,9 +16,14 @@ cloudinary.config({
 });
 
 const uploadToCloudinary = async (req: Request, options: object) => {
-  const file = URI(req).content as string;
-  const result = await cloudinary.uploader.upload(file, options);
-  return result.secure_url;
+  try {
+    const file = URI(req).content as string;
+    const result = await cloudinary.uploader.upload(file, options);
+    appAssert(result, UNPROCESSABLE_CONTENT, "Error uploading image");
+    return result.secure_url;
+  } catch (error) {
+    throw new Error("Failed to upload Image");
+  }
 };
 
 export default uploadToCloudinary;

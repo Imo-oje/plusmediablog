@@ -1,5 +1,6 @@
 import uploadToCloudinary from "../config/cloudinary";
-import { BAD_REQUEST, OK } from "../constants/http";
+import { BAD_REQUEST, NOT_FOUND, OK } from "../constants/http";
+import Category from "../models/category.model";
 import Comment from "../models/comment.model";
 import Post from "../models/post.model";
 import User from "../models/user.model";
@@ -22,14 +23,19 @@ export const createPost = asyncHandler(async (req, res) => {
   };
   // Upload to cloudinary
   const imageURL = await uploadToCloudinary(req, cloudinaryOptions);
+  const category = await Category.find({ name: request.category });
+  appAssert(category, NOT_FOUND, "Invalid category");
 
   const post = await Post.create({
     content: request.content,
     title: request.title,
     author: req.userId,
     image: imageURL,
-    category: request.category,
   });
+  post.category = [
+    ...new Set([...post.category, ...(category.map((each) => each._id) || [])]),
+  ];
+  post.save();
 
   console.log(request);
   res.status(OK).json({ message: "Post created successfully" });
