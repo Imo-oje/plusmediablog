@@ -42,7 +42,7 @@ export default function RegisterForm({
     error,
   } = useMutation({
     mutationFn: (data: LoginParams) => {
-      return fetch("http://localhost:2025/auth/register", {
+      return fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
         method: "POST",
         credentials: "include",
         headers: {

@@ -63,7 +63,7 @@ export default function Editor() {
       isDraft: boolean;
       image: File | null;
     }) => {
-      return fetch("http://localhost:2025/post/create-post", {
+      return fetch(`${import.meta.env.VITE_API_URL}/post/create-post`, {
         method: "POST",
         credentials: "include",
         headers: {
