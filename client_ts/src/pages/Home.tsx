@@ -10,7 +10,7 @@ const Home = () => {
       <main className="w-full h-full">
         <section className="my-10 lg:grid lg:gap-6 grid-cols-10 block w-full h-full">
           <div className="container mx-auto lg:pr-0 col-span-6 max-w-fit relative flex flex-col gap-5 px-[24px] lg:px-0">
-            <picture className="relative block">
+            <picture className="relative block pl-[24px]">
               <img
                 src="https://images.unsplash.com/photo-1741557571786-e922da981949?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Featured image"
@@ -38,7 +38,7 @@ const Home = () => {
                 </div>
               </Link>
             </picture>
-            <div className="p-4 flex flex-col gap-2">
+            <div className="p-4 flex flex-col gap-2 pl-[24px]">
               <Link to="*" className="text-lg font-bold">
                 Ethan Caldwell on September 29, 2024
               </Link>

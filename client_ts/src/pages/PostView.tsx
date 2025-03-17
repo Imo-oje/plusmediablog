@@ -7,7 +7,7 @@ const PostView = () => {
     <>
       <Navbar />
       <main className="px-[24px] my-10">
-        <div className="flex gap-2 md:gap-6 flex-col md:grid md:grid-cols-10 w-full h-full">
+        <div className="flex flex-col gap-2 md:gap-6 md:grid md:grid-cols-10 w-full h-full lg:flex-row lg:justify-between">
           <div className="flex flex-col justify-between md:flex-1 md:w-auto col-span-5 2xl">
             <div className="flex flex-col gap-2">
               <Link
@@ -30,11 +30,11 @@ const PostView = () => {
               <Button>Travel</Button>
             </div>
           </div>
-          <picture className="relative block col-span-5">
+          <picture className="relative w-fit block col-span-5">
             <img
               src="https://images.unsplash.com/photo-1741557571786-e922da981949?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Featured image"
-              className="h-full object-cover rounded-2xl md:w-[500px]"
+              className="h-full object-cover rounded-2xl md:w-[500px] lg:w-[600px]"
               decoding="async"
               fetchPriority="high"
               srcSet="https://images.unsplash.com/photo-1741557571786-e922da981949?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -43,9 +43,9 @@ const PostView = () => {
             {/* Image Overlay */}
             <Link
               to="https://images.unsplash.com/photo-1741557571786-e922da981949?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              className="!absolute inset-0 z-10 block w-full h-full group"
+              className="!absolute inset-0 z-10 block w-fit group"
             >
-              <div className="flex justify-between items-center p-6 mx-auto opacity-70">
+              <div className="flex justify-between items-center p-6  w-fit opacity-70">
                 <div>
                   <Button className="hidden group-hover:block">
                     6 Min Read
