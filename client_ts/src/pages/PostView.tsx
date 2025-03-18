@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 const PostView = () => {
   const { postId } = useParams();
 
-  const { isPending, isError, error, data } = useQuery({
+  const { isPending, isError, error } = useQuery({
     queryKey: ["GET_SINGLE_POST"],
     queryFn: () => {
       return fetch(`${import.meta.env.VITE_API_URL}/post/get-post/${postId}`, {
