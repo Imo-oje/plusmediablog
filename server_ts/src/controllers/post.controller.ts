@@ -1,5 +1,10 @@
 import uploadToCloudinary from "../config/cloudinary";
-import { BAD_REQUEST, NOT_FOUND, OK } from "../constants/http";
+import {
+  BAD_REQUEST,
+  NOT_FOUND,
+  OK,
+  UNPROCESSABLE_CONTENT,
+} from "../constants/http";
 import Category from "../models/category.model";
 import Comment from "../models/comment.model";
 import Post from "../models/post.model";
@@ -9,8 +14,6 @@ import { asyncHandler } from "../utils/async-handler";
 import { createPostSchema } from "../utils/auth.schema";
 
 export const createPost = asyncHandler(async (req, res) => {
-  const user = await User.findOne({ userId: req.userId });
-
   const request = createPostSchema.parse({
     ...req.body,
   });
@@ -22,9 +25,9 @@ export const createPost = asyncHandler(async (req, res) => {
     overwrite: true,
   };
   // Upload to cloudinary
-  const imageURL = await uploadToCloudinary(req, cloudinaryOptions);
-  const category = await Category.find({ name: request.category });
-  appAssert(category, NOT_FOUND, "Invalid category");
+  const imageURL = await uploadToCloudinary(req, res, cloudinaryOptions);
+  const category = await Category.find({ name: request.category }).exec();
+  appAssert(category.length > 0, NOT_FOUND, "Invalid category");
 
   const post = await Post.create({
     content: request.content,
@@ -35,17 +38,27 @@ export const createPost = asyncHandler(async (req, res) => {
   post.category = [
     ...new Set([...post.category, ...(category.map((each) => each._id) || [])]),
   ];
-  post.save();
+  await post.save();
 
-  console.log(request);
   res.status(OK).json({ message: "Post created successfully" });
 });
 
-export const deletePost = asyncHandler(async (req, res) => {
-  const postId = req.params.postId;
+export const getPost = asyncHandler(async (req, res) => {
+  const { postId } = req.params;
 
   const post = await Post.findOne({ postId: postId });
-  appAssert(post, BAD_REQUEST, "Post not found");
+  appAssert(post, NOT_FOUND, "Post not found");
+
+  res.status(OK).json({
+    post,
+  });
+});
+
+export const deletePost = asyncHandler(async (req, res) => {
+  const { postId } = req.params;
+
+  const post = await Post.findOne({ postId: postId });
+  appAssert(post, NOT_FOUND, "Post not found");
 
   const deletedpost = await Promise.all([
     Post.findOneAndDelete({ postId: postId }),

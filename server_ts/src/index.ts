@@ -11,6 +11,7 @@ import postRouter from "./routes/post.route";
 import adminRouter from "./routes/admin.route";
 import authenticate from "./middleware/authenticate";
 import { admin } from "./middleware/admin";
+import categoryRouter from "./routes/category.route";
 
 const app = express();
 
@@ -31,9 +32,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors(corsOptions));
 
-app.use("/auth", authRouter);
-app.use("/post", postRouter);
-app.use("/admin", authenticate, admin, adminRouter);
+app.use("/auth", authRouter); //public
+app.use("/post", postRouter); // mixed
+app.use("/admin", authenticate, admin, adminRouter); //Admins only
+app.use("/category", categoryRouter); // public
 
 app.use(errorHandler);
 

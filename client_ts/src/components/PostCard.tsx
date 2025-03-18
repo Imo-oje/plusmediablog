@@ -11,11 +11,11 @@ import {
 const PostCard = () => {
   return (
     <>
-      <Card className="shadow-none rounded-none flex flex-col-reverse sm:flex-row border-none lg:items-start lg:mb-6">
+      <Card className="shadow-none rounded-none py-0 flex flex-col-reverse sm:flex-row border-none lg:items-start">
         <div className="w-full sm:mr-4">
-          <CardHeader className="lg:pt-0 py-3 px-0">
+          <CardHeader className="lg:pt-0 py-1 px-0">
             <CardTitle>
-              <Link to="*">
+              <Link to="/post/someId">
                 <h2 className="text-[21px] font-bold md:leading-6 capitalize">
                   The Future of Work: Tech and Remote Trends
                 </h2>

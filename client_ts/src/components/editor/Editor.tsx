@@ -20,7 +20,6 @@ import {
   Select,
 } from "../ui/select";
 import { Loader2 } from "lucide-react";
-import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 
 export default function Editor() {
@@ -57,37 +56,29 @@ export default function Editor() {
   });
 
   const { mutate: createPost, isPending } = useMutation({
-    mutationFn: (data: {
-      content: string | undefined;
-      title: string;
-      isDraft: boolean;
-      image: File | null;
-    }) => {
+    mutationFn: (data: FormData) => {
       return fetch(`${import.meta.env.VITE_API_URL}/post/create-post`, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        body: data,
       });
     },
   });
 
   const handleSubmit = (draft = false) => {
-    if (draft) {
-      console.log({
-        ...postContent,
-        isDraft: true,
-      });
-      return createPost({
-        ...postContent,
-        isDraft: true,
-      });
+    if (!postContent.title || !postContent.content) {
+      return;
     }
 
-    console.log(postContent);
-    return createPost(postContent);
+    const formData = new FormData();
+    formData.append("title", postContent.title);
+    formData.append("content", postContent.content || "");
+    formData.append("category", postContent.category);
+    formData.append("isDraft", draft.toString()); // Convert boolean to string
+    if (postContent.image) {
+      formData.append("image", postContent.image);
+    }
+    createPost(formData);
   };
 
   return (
@@ -105,7 +96,6 @@ export default function Editor() {
           placeholder="Post title..."
         />
         <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="picture">Picture</Label>
           <Input
             onChange={(e) => {
               setPostContent((prevContent) => ({

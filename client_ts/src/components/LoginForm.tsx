@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { Button } from "@/components/ui/button";
@@ -27,11 +27,9 @@ export default function LoginForm({
     password: string;
   };
 
-  const { register, handleSubmit, reset } = useForm<LoginParams>({
+  const { register, handleSubmit } = useForm<LoginParams>({
     resolver: zodResolver(schema),
   });
-
-  const navigate = useNavigate();
 
   const {
     mutate: signUp,
@@ -49,9 +47,8 @@ export default function LoginForm({
         body: JSON.stringify(data),
       });
     },
-    onSuccess: () => {
-      reset();
-      navigate("/dashboard", { replace: true });
+    onSuccess: (data) => {
+      console.log(data);
     },
   });
 

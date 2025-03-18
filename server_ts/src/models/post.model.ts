@@ -8,8 +8,8 @@ export interface PostDocument extends Document {
   postId: string;
   content: string;
   likes: number;
+  author: string;
   comments: Schema.Types.ObjectId[];
-  author: Schema.Types.ObjectId[];
   category: mongoose.Types.ObjectId[];
 }
 
@@ -19,7 +19,7 @@ const postSchema = new Schema<PostDocument>(
     title: { type: String, required: true },
     image: { type: String, required: false },
     content: { type: String, required: true },
-    author: { type: [Schema.Types.ObjectId], ref: "User", required: true },
+    author: { type: String, ref: "User", required: true },
     likes: { type: Number, required: false, default: 0 },
     comments: {
       type: [mongoose.Types.ObjectId],

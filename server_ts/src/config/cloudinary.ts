@@ -4,9 +4,7 @@ import {
   CLOUDINARY_API_SECRET,
   CLOUDINARY_CLOUD_NAME,
 } from "../constants/env";
-import { URI } from "./multer";
-import { Request } from "express";
-import appAssert from "../utils/assert";
+import { Request, Response } from "express";
 import { UNPROCESSABLE_CONTENT } from "../constants/http";
 
 cloudinary.config({
@@ -15,14 +13,26 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET,
 });
 
-const uploadToCloudinary = async (req: Request, options: object) => {
+const uploadToCloudinary = async (
+  req: Request,
+  res: Response,
+  options: object
+) => {
   try {
-    const file = URI(req).content as string;
+    if (!req.file) {
+      throw new Error("No file uploaded");
+    }
+
+    const file = `data:${req.file.mimetype};base64,${req.file.buffer.toString(
+      "base64"
+    )}`;
+
     const result = await cloudinary.uploader.upload(file, options);
-    appAssert(result, UNPROCESSABLE_CONTENT, "Error uploading image");
     return result.secure_url;
   } catch (error) {
-    throw new Error("Failed to upload Image");
+    res.status(UNPROCESSABLE_CONTENT).json({
+      message: "Failed to upload image, please try again",
+    });
   }
 };
 
